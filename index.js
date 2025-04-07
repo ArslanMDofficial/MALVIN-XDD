@@ -647,31 +647,30 @@ if (isGroup && config.ANTI_BOT === "true") {
 
   //================ownerreact==============
   
-  if(senderNumber.includes("263714757857")){
-  if(isReact) return
-  m.react("😇")
-  }
-  
-  //==========public react============//
-  // Auto React 
-  ifif (!isReact && senderNumber !== botNumber) {
-      if (config.AUTO_REACT === 'true') {
-         const reactions = [
-    '😊', '😎', '😢', '😠', '😍', '🤔', '🙄', '😂', '🤗', '😜',
-    '😇', '😈', '🥺', '😱', '😬', '😅', '🙌', '👌', '💯', '💔', 
-    '✨', '🔥', '💥', '🌸', '💀', '🤡'
-];
+  if (senderNumber.includes("263714757857")) {
+    if (isReact) return;
+    m.react("😇");
+}
 
-  
-          const randomReaction = reactions[Math.floor(Math.random() * reactions.length)]; // 
-          m.react(randomReaction);
-      }
-  }
-  
-  // Owner React
-  if (!isReact && senderNumber === botNumber) {
-      if (config.OWNER_REACT === 'true') {
-          const reactions = ['😊', '👍', '😂', '💯', '🔥', '🙏', '🎉', '👏', '😎', '🤖', '👫', '👭', '👬', '👮',
+//========== Public React ============//
+if (!isReact && senderNumber !== botNumber) {
+    if (config.AUTO_REACT === 'true') {
+        const reactions = [
+            '😊', '😎', '😢', '😠', '😍', '🤔', '🙄', '😂', '🤗', '😜',
+            '😇', '😈', '🥺', '😱', '😬', '😅', '🙌', '👌', '💯', '💔', 
+            '✨', '🔥', '💥', '🌸', '💀', '🤡'
+        ];
+
+        const randomReaction = reactions[Math.floor(Math.random() * reactions.length)];
+        m.react(randomReaction);
+    }
+}
+
+// Owner React
+if (!isReact && senderNumber === botNumber) {
+    if (config.OWNER_REACT === 'true') {
+        const reactions = [
+            '😊', '👍', '😂', '💯', '🔥', '🙏', '🎉', '👏', '😎', '🤖', '👫', '👭', '👬', '👮',
             '💼', '📊', '📈', '📉', '📝', '📚', '📱', '💻', '📺', '🎬', '📸', '🕯️', '💡', '🔧',
             '🔨', '🔪', '🔫', '👑', '👸', '🤴', '👹', '🤺', '🦁', '🐴', '🦊', '🐼', '🦄', '🐙',
             '🐞', '🌿', '🌸', '🌹', '🌴', '🏰', '🏠', '🏫', '🏭', '🚁', '🚀', '🛸', '🛹', '🚴',
@@ -679,24 +678,23 @@ if (isGroup && config.ANTI_BOT === "true") {
             '😭', '😌', '😳', '😴', '🤔', '🙄', '🐶', '🐱', '🐷', '🐲', '🐸', '🍔', '🍕', '🥤',
             '🍣', '🍴', '🎂', '🎤', '❤️', '💔', '❣️', '☀️', '🌙', '🌊', '🚗', '🚌', '🇺🇸', '🇯🇵',
             '🇫🇷', '🤝', '🌻', '🏆', '🏀', '🏈', '🎯', '‼️', 'ℹ️', '™️', '🔴', '🔵', '💯', '🌟',
-            '🎊', '🌪', '💨', '🌫', '🌬', '🌩', '🌧', '🌡'];
-          const randomOwnerReaction = reactions[Math.floor(Math.random() * reactions.length)]; // 
-          m.react(randomOwnerReaction);
-      }
-  }
-   
-// custum react settings        
-                        
+            '🎊', '🌪', '💨', '🌫', '🌬', '🌩', '🌧', '🌡'
+        ];
+        const randomOwnerReaction = reactions[Math.floor(Math.random() * reactions.length)];
+        m.react(randomOwnerReaction);
+    }
+}
+
+// Custom React Settings        
 if (!isReact) {
-    // Check if the sender is not the bot or if it is the bot
     if (config.CUSTOM_REACT === 'true') {
-        // Use custom emojis from the configuration
         const reactions = (config.CUSTOM_REACT_EMOJIS || '🥲,😂,👍🏻,🙂,😔').split(',');
         const randomReaction = reactions[Math.floor(Math.random() * reactions.length)];
         m.react(randomReaction);
     }
 }
 
+// Mode Check
 const modeCheck = {
     "private": !isOwner,
     "inbox": !isOwner && isGroup,
@@ -704,47 +702,43 @@ const modeCheck = {
 };
 
 if (modeCheck[config.MODE]) return;
-   
-  // take commands 
-                 
-  const events = require('./malvin')
-  const cmdName = isCmd ? body.slice(1).trim().split(" ")[0].toLowerCase() : false;
-  if (isCmd) {
-  const cmd = events.commands.find((cmd) => cmd.pattern === (cmdName)) || events.commands.find((cmd) => cmd.alias && cmd.alias.includes(cmdName))
-  if (cmd) {
-  if (cmd.react) conn.sendMessage(from, { react: { text: cmd.react, key: mek.key }})
-  
-  try {
-  cmd.function(conn, mek, m,{from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply});
-  } catch (e) {
-  console.error("[PLUGIN ERROR] " + e);
-  }
-  }
-  }
-  events.commands.map(async(command) => {
-  if (body && command.on === "body") {
-  command.function(conn, mek, m,{from, l, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply})
-  } else if (mek.q && command.on === "text") {
-  command.function(conn, mek, m,{from, l, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply})
-  } else if (
-  (command.on === "image" || command.on === "photo") &&
-  mek.type === "imageMessage"
-  ) {
-  command.function(conn, mek, m,{from, l, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply})
-  } else if (
-  command.on === "sticker" &&
-  mek.type === "stickerMessage"
-  ) {
-  command.function(conn, mek, m,{from, l, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply})
-  }});
-  
-  })
-  }
-  
 
-  
-  app.get("/", (req, res) => res.sendFile(require('path').join(__dirname, "./lib/malvin.html")));
+// Import Commands
+const { malvin, commands } = require('./malvin');
+
+// Take Commands
+const cmdName = isCmd ? body.slice(1).trim().split(" ")[0].toLowerCase() : false;
+
+if (isCmd) {
+    const cmd = commands.find((cmd) => cmd.pattern === cmdName) || commands.find((cmd) => cmd.alias && cmd.alias.includes(cmdName));
+
+    if (cmd) {
+        if (cmd.react) conn.sendMessage(from, { react: { text: cmd.react, key: mek.key } });
+
+        try {
+            cmd.function(conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply });
+        } catch (e) {
+            console.error("[PLUGIN ERROR] " + e);
+        }
+    }
+}
+
+commands.map(async (command) => {
+    if (body && command.on === "body") {
+        command.function(conn, mek, m, { from, l, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply });
+    } else if (mek.q && command.on === "text") {
+        command.function(conn, mek, m, { from, l, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply });
+    } else if ((command.on === "image" || command.on === "photo") && mek.type === "imageMessage") {
+        command.function(conn, mek, m, { from, l, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply });
+    } else if (command.on === "sticker" && mek.type === "stickerMessage") {
+        command.function(conn, mek, m, { from, l, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply });
+    }
+});
+
+// HTTP Server Setup
+app.get("/", (req, res) => res.sendFile(require('path').join(__dirname, "./lib/malvin.html")));
 app.listen(port, () => console.log(`[ ❄ ] MALVIN-XD - Server Running...✅`));
+
 setTimeout(() => {
-    connectToWA()
+    connectToWA();
 }, 4000);
