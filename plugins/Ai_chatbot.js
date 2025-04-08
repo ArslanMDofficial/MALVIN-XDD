@@ -16,7 +16,7 @@ Support      : wa.me/263714757857
 */
 
 const { malvin, commands } = require('../malvin');
-const { chatbotEnabled } = require('./settings');
+const { chatbotEnabled } = require('../settings');
 
 // Expanded phrases and responses, designed to sound more engaging and conversational
 const phrasesResponses = [
