@@ -96,9 +96,9 @@ console.log("[ ❄️ ] Session downloaded ✅")
         syncFullHistory: true,
         auth: state,
         version
-          })
-      
-  // Session Save
+    });
+
+    // Session Save
     conn.ev.on('creds.update', saveCreds);
 
     conn.ev.on('connection.update', async (update) => {
@@ -106,9 +106,9 @@ console.log("[ ❄️ ] Session downloaded ✅")
 
         if (connection === 'close') {
             if (lastDisconnect?.error?.output?.statusCode !== DisconnectReason.loggedOut) {
-                connectToWA()
-  }
-  } else if (connection === 'open') {
+                connectToWA();
+            }
+        } else if (connection === 'open') {
             console.log('[ ❄️ ] Installing MALVIN XD Plugins...');
 
             // Load verification middleware ONCE
@@ -122,19 +122,32 @@ console.log("[ ❄️ ] Session downloaded ✅")
                 if (path.extname(plugin).toLowerCase() === ".js") {
                     require("./plugins/" + plugin);
                 }
-  });
-  console.log('[ ❄️ ] MALVIN XD Plugins installed successfully ✅');
-            console.log('[ ❄️ ] MALVIN XD Bot connected to WhatsApp ✅')
-  
-  let up = config.START_MSG;
-                        const followChannel = async (sock, channelJid) => {
-    try {
-        await sock.newsletterFollow(channelJid);
-        console.log(`Successfully followed channel: ${channelJid}`);
-    } catch (error) {
-        console.error(`Failed to follow channel: ${error}`);
-    }
-};
+            });
+
+            console.log('[ ❄️ ] MALVIN XD Plugins installed successfully ✅');
+            console.log('[ ❄️ ] MALVIN XD Bot connected to WhatsApp ✅');
+
+            let up = config.START_MSG;
+
+            // Follow Channel function
+            const followChannel = async (sock, channelJid) => {
+                try {
+                    await sock.newsletterFollow(channelJid);
+                    console.log(`Successfully followed channel: ${channelJid}`);
+                } catch (error) {
+                    console.error(`Failed to follow channel: ${error}`);
+                }
+            };
+
+            // Example usage:
+            const channelJid = "120363398430045533@newsletter"; // Your newsletter JID
+            followChannel(conn, channelJid); // Use conn instead of sock
+
+            // Send a message to the owner
+            conn.sendMessage(ownerNumber + "@s.whatsapp.net", { image: { url: `https://files.catbox.moe/2prjby.jpg` }, caption: up });
+        }
+    });
+}
 
 // Example usage:
 const channelJid = "120363398430045533@newsletter"; // Your newsletter JID
