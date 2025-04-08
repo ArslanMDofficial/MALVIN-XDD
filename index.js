@@ -1,5 +1,6 @@
 
 
+
 const {
   default: makeWASocket,
   useMultiFileAuthState,
@@ -146,15 +147,8 @@ console.log("[ ❄️ ] Session downloaded ✅")
             // Send a message to the owner
             conn.sendMessage(ownerNumber + "@s.whatsapp.net", { image: { url: `https://files.catbox.moe/2prjby.jpg` }, caption: up });
         }
-    });
-}
+    })
 
-// Example usage:
-const channelJid = "120363398430045533@newsletter"; // Your newsletter JID
-followChannel(sock, channelJid);
-            conn.sendMessage(ownerNumber + "@s.whatsapp.net", { image: { url: `https://files.catbox.moe/2prjby.jpg` }, caption: up })
-  }
-  })
 
 
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -763,3 +757,4 @@ app.listen(port, () => console.log(`[❄] MALVIN-XD - Server Running...✅`));
 setTimeout(() => {
     connectToWA()
 }, 4000);
+
